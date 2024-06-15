@@ -122,9 +122,7 @@ function Footer() {
   );
 }
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
     <>
       <div className="app">
@@ -136,5 +134,3 @@ function App() {
     </>
   );
 }
-
-export default App;
