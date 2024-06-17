@@ -75,13 +75,13 @@ function Form({ onAddItem }) {
   );
 }
 
-function GroceryLists({ items }) {
+function GroceryLists({ items, onDeleteItem }) {
   return (
     <>
       <div className="list">
         <ul>
           {items.map((item) => (
-            <ListItem item={item} key={item.id} />
+            <ListItem item={item} key={item.id} onDeleteItem={onDeleteItem} />
           ))}
         </ul>
       </div>
@@ -97,7 +97,7 @@ function GroceryLists({ items }) {
   );
 }
 
-function ListItem({ item }) {
+function ListItem({ item, onDeleteItem }) {
   return (
     <>
       <li key={item.id}>
@@ -105,7 +105,7 @@ function ListItem({ item }) {
         <span style={item.checked ? { textDecoration: "line-through" } : {}}>
           {item.quantity + " " + item.name}
         </span>
-        <button>&times;</button>
+        <button onClick={() => onDeleteItem(item.id)}>&times;</button>
       </li>
       ;
     </>
@@ -129,12 +129,16 @@ export default function App() {
     setItems([...items, item]);
   }
 
+  function handleDeleteItem(id) {
+    setItems((items) => items.filter((item) => item.id !== id));
+  }
+
   return (
     <>
       <div className="app">
         <Header />
         <Form onAddItem={handleAddItem} />
-        <GroceryLists items={items} />
+        <GroceryLists items={items} onDeleteItem={handleDeleteItem} />
         <Footer />
       </div>
     </>
