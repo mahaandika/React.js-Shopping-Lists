@@ -25,7 +25,7 @@ function Header() {
   return <h1>Catatan Belanjaku 📝</h1>;
 }
 
-function Form() {
+function Form({ onAddItem }) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -43,7 +43,7 @@ function Form() {
     setName("");
     setQuantity(1);
 
-    console.log(newItem);
+    onAddItem(newItem);
   }
 
   const quantityNum = [...Array(10)].map((_, i) => (
@@ -75,12 +75,12 @@ function Form() {
   );
 }
 
-function GroceryLists() {
+function GroceryLists({ items }) {
   return (
     <>
       <div className="list">
         <ul>
-          {groceryItems.map((item) => (
+          {items.map((item) => (
             <ListItem item={item} key={item.id} />
           ))}
         </ul>
@@ -123,12 +123,18 @@ function Footer() {
 }
 
 export default function App() {
+  const [items, setItems] = useState([]);
+
+  function handleAddItem(item) {
+    setItems([...items, item]);
+  }
+
   return (
     <>
       <div className="app">
         <Header />
-        <Form />
-        <GroceryLists />
+        <Form onAddItem={handleAddItem} />
+        <GroceryLists items={items} />
         <Footer />
       </div>
     </>
