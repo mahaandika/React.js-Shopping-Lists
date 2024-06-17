@@ -133,11 +133,20 @@ function ListItem({ item, onDeleteItem, onToggleCheck }) {
   );
 }
 
-function Footer() {
+function Footer({ items }) {
+  if (items.length == 0) {
+    return <footer className="stats">daftar belanjaan masih kosong</footer>;
+  }
+
+  let totalItems = items.length;
+  let buyedItems = items.filter((item) => item.checked).length;
+  let percentage = Math.round((buyedItems / totalItems) * 100);
+
   return (
     <>
       <footer className="stats">
-        Ada 10 barang di daftar belanjaan, 5 barang sudah dibeli (50%)
+        Ada {totalItems} barang di daftar belanjaan, {buyedItems} barang sudah
+        dibeli ({percentage}%)
       </footer>
     </>
   );
@@ -183,7 +192,7 @@ export default function App() {
           onToggleCheck={handleToggleCheck}
           onClearItems={handleClearItems}
         />
-        <Footer />
+        <Footer items={items} />
       </div>
     </>
   );
