@@ -76,11 +76,27 @@ function Form({ onAddItem }) {
 }
 
 function GroceryLists({ items, onDeleteItem, onToggleCheck, onClearItems }) {
+  const [sortBy, setSortBy] = useState("input");
+
+  let sortedItmes;
+
+  if (sortBy === "input") {
+    sortedItmes = items;
+  }
+
+  if (sortBy === "name") {
+    sortedItmes = items.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  if (sortBy === "checked") {
+    sortedItmes = items.slice().sort((a, b) => a.checked - b.checked);
+  }
+
   return (
     <>
       <div className="list">
         <ul>
-          {items.map((item) => (
+          {sortedItmes.map((item) => (
             <ListItem
               item={item}
               key={item.id}
@@ -91,7 +107,7 @@ function GroceryLists({ items, onDeleteItem, onToggleCheck, onClearItems }) {
         </ul>
       </div>
       <div className="actions">
-        <select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="input">Urutkan berdasarkan urutan input</option>
           <option value="name">Urutkan berdasarkan nama barang</option>
           <option value="checked">Urutkan berdasarkan ceklis</option>
