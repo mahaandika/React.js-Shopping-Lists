@@ -75,7 +75,7 @@ function Form({ onAddItem }) {
   );
 }
 
-function GroceryLists({ items, onDeleteItem, onToggleCheck }) {
+function GroceryLists({ items, onDeleteItem, onToggleCheck, onClearItems }) {
   return (
     <>
       <div className="list">
@@ -96,7 +96,7 @@ function GroceryLists({ items, onDeleteItem, onToggleCheck }) {
           <option value="name">Urutkan berdasarkan nama barang</option>
           <option value="checked">Urutkan berdasarkan ceklis</option>
         </select>
-        <button>Bersihkan Daftar</button>
+        <button onClick={onClearItems}>Bersihkan Daftar</button>
       </div>
     </>
   );
@@ -152,6 +152,10 @@ export default function App() {
     );
   }
 
+  function handleClearItems() {
+    setItems([]);
+  }
+
   return (
     <>
       <div className="app">
@@ -161,6 +165,7 @@ export default function App() {
           items={items}
           onDeleteItem={handleDeleteItem}
           onToggleCheck={handleToggleCheck}
+          onClearItems={handleClearItems}
         />
         <Footer />
       </div>
