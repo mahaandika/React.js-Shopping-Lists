@@ -75,13 +75,18 @@ function Form({ onAddItem }) {
   );
 }
 
-function GroceryLists({ items, onDeleteItem }) {
+function GroceryLists({ items, onDeleteItem, onToggleCheck }) {
   return (
     <>
       <div className="list">
         <ul>
           {items.map((item) => (
-            <ListItem item={item} key={item.id} onDeleteItem={onDeleteItem} />
+            <ListItem
+              item={item}
+              key={item.id}
+              onDeleteItem={onDeleteItem}
+              onToggleCheck={onToggleCheck}
+            />
           ))}
         </ul>
       </div>
@@ -97,11 +102,11 @@ function GroceryLists({ items, onDeleteItem }) {
   );
 }
 
-function ListItem({ item, onDeleteItem }) {
+function ListItem({ item, onDeleteItem, onToggleCheck }) {
   return (
     <>
       <li key={item.id}>
-        <input type="checkbox" />
+        <input type="checkbox" onChange={() => onToggleCheck(item.id)} />
         <span style={item.checked ? { textDecoration: "line-through" } : {}}>
           {item.quantity + " " + item.name}
         </span>
@@ -133,12 +138,30 @@ export default function App() {
     setItems((items) => items.filter((item) => item.id !== id));
   }
 
+  /* 
+    handleToggleCheck adalah fungsi yang digunakan untuk mengubah status ceklis pada item
+    fungsi ini menerima parameter id yang digunakan untuk mencari item yang ingin diubah
+    fungsi ini menggunakan metode map untuk mengubah item yang sesuai dengan id yang akan diubah status ceklisnya menjadi kebalikan
+    item yang tidak sesuai dengan id akan tetap sama
+    */
+  function handleToggleCheck(id) {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      )
+    );
+  }
+
   return (
     <>
       <div className="app">
         <Header />
         <Form onAddItem={handleAddItem} />
-        <GroceryLists items={items} onDeleteItem={handleDeleteItem} />
+        <GroceryLists
+          items={items}
+          onDeleteItem={handleDeleteItem}
+          onToggleCheck={handleToggleCheck}
+        />
         <Footer />
       </div>
     </>
